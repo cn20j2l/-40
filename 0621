@@ -1,1 +1,41 @@
 0621 数组
+1.数组是储存在连续空间上数据类型相同的数据
+2.数组元素下标从0开始
+3. 地址是连续的 （C++)
+4. 数组中数字不能删除只能覆盖
+
+二分查找
+前提：有序数组 无重复数字
+写法：左开右闭 左闭右闭
+第一种：左闭右闭
+while(left<=right) //使left == right 
+right = middle-1
+left = middle+1  //让新区间不包含中间值（middle不是target 已经比较过）
+
+
+
+
+Leecode 704
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int left = 0;
+        int right = nums.size()-1;
+            while(left<=right){
+                int middle = (left+right)/2;
+                    if(nums[middle]>target){
+                        right = middle -1;
+                    }
+                    else if(nums[middle] < target){
+                        left = middle +1;
+                    }
+                    else if(nums[middle]==target) {
+                    return middle;
+                    }
+                    }
+                    
+                  return -1;   
+            }    
+};
+
+
