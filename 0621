@@ -38,4 +38,55 @@ public:
             }    
 };
 
+移除元素
+数组中不能直接移除元素，应该把后面的元素向前移
+1.暴力解法
+双循环
+外循环历遍数组，找到目标值
+内循环把后续数组移到前面完成目标
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+     int x = nums.size();
+     for(int i =0;i<x; i++){
+         if(nums[i]==val){
+            for(int a = i+1;a<x; a++) {    
+            nums[a-1]=nums[a];
+            }
+            i--;
+            x--;
+         }
+
+     }
+     return x;
+    }
+};
+注意事项：
+要把数组的大小减一
+使用for循环而不是while
+
+2.双指针法
+快指针：找数字（新数组里需要的元素/删除目标值）
+慢指针：更新下标 
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+     int slowind = 0;
+     int x=nums.size();
+     for(int fastind =0; fastind<x; fastind++){
+         if(val!=nums[fastind]){
+            nums[slowind]=nums[fastind];
+            slowind++;
+// nums[slowind++]=nums[fastind];
+         }
+
+     }
+     return slowind;
+    }
+};
+一层for循环
+当数组的值不等于寻找值，快指针获取的值赋到慢指针所在的位置
+不是需要的值，慢指针不动快指针继续更新
+
+
 
