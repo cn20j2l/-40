@@ -37,4 +37,30 @@ public:
        return result;
     }
 };
-
+2. 长度最小的子数组
+暴力解法：
+遍历所有数，求和 求长度
+i作为起始位置 j作为终止位置
+从头开始遍历数组 求和
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+      int sum = 0;
+      int length = 0;
+      int result = INT32_MAX; //使最终值的初始值为最大
+      for(int i=0; i<nums.size(); i++){
+             sum = 0;  // i更新后 重新计算总和
+            for(int j=i; j<nums.size();j++){
+                sum += nums[j];
+                if (sum>=target){
+                    length = j-i+1;
+                    result = min(result,length);
+                    break; //一旦找到符合的数组 就退出
+                }
+            }
+      }
+      // 如果result没有被赋值的话，就返回0，说明没有符合条件的子序列
+        return result == INT32_MAX ? 0 : result;
+    }
+          
+};
