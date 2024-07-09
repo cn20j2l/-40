@@ -11,10 +11,58 @@
 6.链表的定义
 struct ListNode{
     int val; //节点上储存的数据
-    ListNode *next //指向下一个节点的指针
+    ListNode* next //指向下一个节点的指针
     ListNode(int x): val(x), next(NULL) {}  //节点构造
 };
 7.链表的操作
 7.1 删除
 删除某一个节点：指针指向下一个节点（C++手动释放内存）
+7.2 增加
+增加一个节点：指向新增的节点
+增加和删除的复杂度是O(1)，查找的复杂度是O(n)
+
+203 删除链表的元素
+想法一：删除链表即为 删除元素前一个元素的指针指向删除元素的下一个元素
+随后释放内存
+
+注意的点：删除头节点和非头节点的区别
+头结点没有前一个节点，删除头结点应直接变换头节点
+
+方法二：
+设置虚拟头节点 所有删除方法都一致
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* removeElements(ListNode* head, int val) {
+      ListNode* dummyHead = new ListNode(0);    //设置虚拟头节点
+      dummyHead-> next = head; //虚拟头结点指向头结点
+      ListNode* cur = dummyHead; // 目前的节点放在头节点 由于要删除 需要查找
+      while(cur-> next != NULL){
+        if(cur->next->val == val){
+            ListNode* tmp = cur->next;
+            cur-> next = cur-> next-> next;
+            delete tmp;
+        }
+        else{
+            cur = cur->next;
+        }
+         
+      }
+        head = dummyHead-> next;
+        delete dummyHead;
+        return head;
+
+    }
+};
+
+707 设计链表
 
