@@ -65,4 +65,154 @@ public:
 };
 
 707 设计链表
+class MyLinkedList {
+public:
+    //定义链表
+    struct LinkedNode{
+        int val; //定义元素
+        LinkedNode* next; //定义指针
+        LinkedNode(int val):val(val), next(nullptr) {} //构造节点
+    };
+    // 初始化链表
+    MyLinkedList() {
+        _dummyHead = new LinkedNode(0); // 这里定义的头结点 是一个虚拟头结点，而不是真正的链表头结点
+        _size = 0;
+    }
+    
+    int get(int index) {
+        if(index > (_size-1) || index<0){
+            return -1;
+        }
+        LinkedNode* cur = _dummyHead-> next;
+        while(index--){
+            cur = cur-> next;
+        }
+        return cur-> val;
 
+    }
+    
+    void addAtHead(int val) {
+        LinkedNode* newNode = new LinkedNode(val);
+        LinkedNode* cur = _dummyHead;
+        newNode->next = cur-> next;
+        cur-> next = newNode;
+        _size++; //记得扩容
+    }
+    
+    void addAtTail(int val) {
+        LinkedNode* newNode = new LinkedNode(val);
+        LinkedNode* cur = _dummyHead;
+        while(cur->next != nullptr){
+            cur = cur->next;
+        }
+        cur->next = newNode;
+        _size++;
+    }
+    
+    void addAtIndex(int index, int val) {
+        //条件设置
+        if(index > _size) return; //在整个链表之后 不添加 (考虑极端情况)
+        if(index < 0) index = 0;
+
+        LinkedNode* newNode = new LinkedNode(val);
+        LinkedNode* cur = _dummyHead;
+
+        while(index--){
+            cur = cur->next;
+        }
+        newNode->next = cur->next;
+        cur->next = newNode;
+        _size++;
+
+    }
+    
+    void deleteAtIndex(int index) {
+        if(index>_size-1 || index<0){
+            return;
+        }
+        LinkedNode* cur = _dummyHead; 
+        while(index--){
+            cur = cur->next;
+        }
+        LinkedNode* tmp = cur->next;
+            cur-> next = cur-> next-> next;
+            delete tmp;
+            tmp = nullptr;
+            _size--;
+
+    }
+
+private:
+    int _size;
+    LinkedNode* _dummyHead;
+};
+
+/**
+ * Your MyLinkedList object will be instantiated and called as such:
+ * MyLinkedList* obj = new MyLinkedList();
+ * int param_1 = obj->get(index);
+ * obj->addAtHead(val);
+ * obj->addAtTail(val);
+ * obj->addAtIndex(index,val);
+ * obj->deleteAtIndex(index);
+ */
+
+206 反转链表
+我的思路：先遍历 找到链表的长度和最后一个数
+再找倒数第二个
+两种方法：双指针和递归法
+双指针法：
+一个是pre 一个是next
+移动pre和next，让指针从next指向pre
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode* pre = nullptr;
+        ListNode* cur = head;
+        ListNode* tmp;
+        while(cur){
+            tmp = cur->next; 
+            cur->next = pre; //这个操作会阻断cur和它下一个节点的连接 从而影响cur的更新
+            
+            pre = cur;
+            cur = tmp;
+        }
+      return pre;
+    }
+};
+递归法：
+基于双指针
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverse(ListNode* pre, ListNode* cur){
+        if(cur==nullptr) return pre;  //停止循环并输出的条件
+        ListNode* tmp = cur->next;
+        cur-> next = pre;
+        //pre = cur;
+       // cur = tmp;
+        return reverse(cur,tmp);
+    };
+    ListNode* reverseList(ListNode* head) {
+         return reverse(nullptr,head);
+        }
+};
