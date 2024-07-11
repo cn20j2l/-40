@@ -1,0 +1,42 @@
+链表part2
+1. 两两交换链表中的元素
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        //虚拟头结点
+        ListNode* dummyHead = new ListNode(0);
+        dummyHead->next = head; //虚拟头节点指向头节点
+        //目前指针指向头节点
+        ListNode* cur = dummyHead;
+        while(cur->next!= nullptr && cur->next->next != nullptr){ //先是next，为了避免出现空指针
+            ListNode* tmp = cur-> next; //第一个节点
+            ListNode* tmp1 = cur-> next -> next-> next;
+            //头指针指向第二个
+            cur->next = cur->next->next; //无法获取第一个指针
+            //第二个节点指向第一个
+            cur->next->next = tmp; //第三个节点无法获取
+            cur->next->next->next = tmp1;
+
+            cur = cur->next->next;
+
+        }   
+        ListNode* result = dummyHead-> next;
+        delete dummyHead;
+        return result;
+    }
+};
+19 删除倒数第n个
+双指针法
+快指针移到末尾，慢指针移到第n个节点
+要删除第n个节点，就要知道它的前一个
+慢指针指向倒数第n+1个节点
