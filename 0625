@@ -40,3 +40,94 @@ public:
 快指针移到末尾，慢指针移到第n个节点
 要删除第n个节点，就要知道它的前一个
 慢指针指向倒数第n+1个节点
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        //设置虚拟头结点
+        ListNode* dummyHead = new ListNode(0);
+        dummyHead-> next = head; 
+        ListNode* fast = dummyHead;
+        ListNode* slow = dummyHead;
+        //先移动 fast
+        while(n-- && fast != nullptr){
+            fast = fast-> next;
+        }
+        fast = fast-> next; //n+1
+        while(fast!=nullptr){
+            fast = fast-> next;
+            slow = slow-> next;
+        }    
+        slow-> next = slow->next->next; 
+        return dummyHead->next;
+    }
+    
+};
+链表相交
+1. 两个链表有长度查 
+2. 相等是指指针相等
+3. 把长链表和短链表的尾端对齐
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        ListNode* curA = headA;
+        ListNode* curB = headB;
+        int lenA = 0; 
+        int lenB= 0;
+        //求A 长度
+        while(curA != nullptr){
+            lenA++;
+            curA = curA->next;
+        }
+        //求B长度
+         while(curB != nullptr){
+            lenB++;
+            curB = curB->next;
+        }
+        //回归head
+        curA = headA;
+        curB= headB;
+       // A为最长链表的头以及lenA为长链表的长度
+        if(lenB>lenA){
+            swap(curA,curB);
+            swap(lenA,lenB);
+        }
+        int gap = lenA-lenB;
+        //同一起点
+        while(gap--){
+            curA = curA->next;
+        }
+
+        while(curA != NULL){
+            if(curA==curB){
+            return curA;
+           }
+           else{
+             curA = curA->next;
+            curB = curB->next;
+           }
+        }
+         return NULL;
+    }
+        
+};
+
+142 环形链表
+
