@@ -130,4 +130,39 @@ public:
 };
 
 142 环形链表
+环形链表要求： 1，判断是否有环
+2. 判断环的入口
+判断是否有环：双指针
+快指针走两步，慢指针走一步
+快指针和慢指针相遇
+环的入口：头节点出发的指针和相遇节点出发的指针 会在入口相遇
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        ListNode* fast = head;
+        ListNode* slow = head;//定义快慢指针
+        while(fast!= NULL && fast->next!=NULL){ //快指针和快指针的下一个都不能为空 否则会出现空指针
+            slow = slow->next;
+            fast = fast->next->next;
+            if(fast == slow){
+                ListNode* index1 = slow;
+                ListNode* index2 = head;
+                while(index1 != index2){
+                    index1 = index1->next;
+                    index2 = index2->next;
+                }
+                return index2;
+            }
+        }
+        return NULL;
+    }
+};
 
